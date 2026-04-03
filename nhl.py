@@ -44,13 +44,12 @@ model.compile(optimizer='adam', loss='mse')
 model.fit(X, y, epochs=100, verbose=0)
 
 #-----------------------------------------------------------------------------------
-# Testing Zone
+# Testing Zone For LSTM
 
 team_name = "Ottawa Senators"
 
 team_data = df_scaled[df_scaled['Team'] == team_name].sort_values('Season')[FEATURES].values
 
-# Use LAST 2 seasons → predict next (Season 4)
 test_input = team_data[-seq_length:].reshape(1, seq_length, len(FEATURES))
 
 scaled_pred = model.predict(test_input, verbose=0)[0]
@@ -70,7 +69,7 @@ df['Playoff'] = (df['P'] >= 80).astype(int)
 
 from sklearn.linear_model import LogisticRegression
 
-clf = LogisticRegression(max_iter=1000)
+clf = LogisticRegression(max_iter=1000,C=0.5)
 clf.fit(df[FEATURES], df['Playoff'])
 
 pred_df = pd.DataFrame([pred], columns=FEATURES)
