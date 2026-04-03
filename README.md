@@ -9,3 +9,5 @@
 5. I added the new bigger season data, whats intersting is that the Sens is predicted to have 90 points this seaosn. Which is  intersing since theyre aorund tehre now
 
 6. While testing you must put a valid team name or else it wont know what it looks for.
+
+7. Fixed probabilty to be more accurate, ratehr than actuign binary
