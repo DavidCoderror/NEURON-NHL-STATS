@@ -9,6 +9,10 @@ df = pd.read_excel("NHL_Season_Stats.xlsx", engine='openpyxl')
 
 FEATURES = ['GP','W','L','OT','P','P%','S/O Win','SO','PP%','PK%','Shots/GP']
 
+# Features I want to add
+df['Points_per_game'] = df['P'] / df['GP']
+FEATURES.append('Points_per_game')
+
 # Scale numeric features
 scaler = MinMaxScaler()
 df_scaled = df.copy()
@@ -23,13 +27,8 @@ teams = df['Team'].unique()
 for team in teams:
     team_data = df_scaled[df_scaled['Team'] == team].sort_values('Season')[FEATURES].values
 
-
-    if team_data.shape[0] != seq_length:
-        print(f"Skipping {team}, unexpected number of seasons: {team_data.shape[0]}")
-        continue
-
-    X.append(team_data)        # shape = (3, num_features)
-    y.append(team_data[-1])    # shape = (num_features,)
+    X.append(team_data[:2])   # S1, S2
+    y.append(team_data[2])    # S3
 
 
 # Convert to arrays
@@ -47,18 +46,36 @@ model.compile(optimizer='adam', loss='mse')
 # Train model
 model.fit(X, y, epochs=100, verbose=0)
 
-# Predict next season for a team
-team_name = "Winnipeg Jets"
+#-----------------------------------------------------------------------------------
+# Testing Zone
+
+team_name = "Pittsburgh Penguins"
+
 team_data = df_scaled[df_scaled['Team'] == team_name].sort_values('Season')[FEATURES].values
 
-# Use last seq_length seasons
-test_input = team_data[-seq_length:].reshape(1, seq_length, len(FEATURES))
+# Use LAST 2 seasons → predict next (Season 4)
+test_input = team_data[-2:].reshape(1, 2, len(FEATURES))
+
 scaled_pred = model.predict(test_input, verbose=0)[0]
 
-# Convert back to original scale
+# Convert back
 pred = scaler.inverse_transform(scaled_pred.reshape(1, -1))[0]
 
-# Print nicely
-print(f"\nPredicted next season stats for {team_name}:\n")
+print(f"\nPredicted Season 4 stats for {team_name}:\n")
 for i, feat in enumerate(FEATURES):
     print(f"{feat}: {pred[i]:.2f}")
+
+
+#-----------------------------------------------------------------------------------
+# Logistic Regression
+
+df['Playoff'] = (df['P'] >= 95).astype(int)
+
+from sklearn.linear_model import LogisticRegression
+
+clf = LogisticRegression(max_iter=1000)
+clf.fit(df[FEATURES], df['Playoff'])
+
+prob = clf.predict_proba(pred.reshape(1, -1))[0][1]
+
+print(f"\nPlayoff probability for {team_name}: {prob*100:.1f}%")
