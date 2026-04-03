@@ -11,3 +11,5 @@
 6. While testing you must put a valid team name or else it wont know what it looks for.
 
 7. Fixed probabilty to be more accurate, ratehr than actuign binary
+
+8. Added a start for html webstie and backend
