@@ -4,4 +4,6 @@
 
 3. Future Note: Merge 10-20 Seasons of the past into One excel. Clean up for teams that dont exist anymore as well. Then verify with AI. Also do probabilty to making the Playoffs.
 
-4. Got home and starte dworking on it, Excel needs consistant data damn
+4. Got home and started working on it, Excel needs consistant data damn
+
+5. I added the new bigger season data, whats intersting is that the Sens is predicted to have 90 points this seaosn. Which is  intersing since theyre aorund tehre now
