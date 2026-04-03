@@ -46,10 +46,12 @@ model.fit(X, y, epochs=100, verbose=0)
 #-----------------------------------------------------------------------------------
 # Testing Zone For LSTM
 
-team_name = "Ottawa Senators"
+# ------------------------------------------------------------------
+# Enter the team name here Noah, look in excel to write proper name
+team_name = "Pittsburgh Penguins"
+# ------------------------------------------------------------------
 
 team_data = df_scaled[df_scaled['Team'] == team_name].sort_values('Season')[FEATURES].values
-
 test_input = team_data[-seq_length:].reshape(1, seq_length, len(FEATURES))
 
 scaled_pred = model.predict(test_input, verbose=0)[0]
@@ -63,16 +65,34 @@ for i, feat in enumerate(FEATURES):
 
 
 #-----------------------------------------------------------------------------------
-# Logistic Regression
+# Logistic Regression then takes the Test to maker a probabilty
 
 df['Playoff'] = (df['P'] >= 80).astype(int)
 
 from sklearn.linear_model import LogisticRegression
 
-clf = LogisticRegression(max_iter=1000,C=0.5)
-clf.fit(df[FEATURES], df['Playoff'])
+scaler_lr = MinMaxScaler()
+X_lr_scaled = scaler_lr.fit_transform(df[FEATURES])
+y_lr = df['Playoff']
 
-pred_df = pd.DataFrame([pred], columns=FEATURES)
-prob = clf.predict_proba(pred_df)[0][1]
+modelProb = LogisticRegression(max_iter=1000, C=0.5)
+modelProb.fit(X_lr_scaled, y_lr)
+
+# Scale LSTM prediction to match training
+pred_scaled_lr = scaler_lr.transform(pred.reshape(1, -1))
+prob = modelProb.predict_proba(pred_scaled_lr)[0][1]
 
 print(f"\nPlayoff probability for {team_name}: {prob*100:.1f}%")
+
+
+
+
+#-----------------------------------------------------------------------------
+# Save LSTM
+from tensorflow.keras.models import load_model
+model.save("NHL_LSTM")
+
+# Save Regression
+import joblib
+joblib.dump(modelProb, "NHL_Regr.pkl")
+joblib.dump(scaler_lr, "NHL_Regr_scaler.pkl")  # Must save the scaler too
