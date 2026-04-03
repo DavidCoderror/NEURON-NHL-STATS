@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Test</title>
+</head>
+<body>
+    <h1>Send Data to Backend</h1>
+    <input id="numberInput" type="number" placeholder="Enter a number">
+    <button onclick="sendData()">Send</button>
+    <p id="result"></p>
+
+    <script>
+        async function sendData() {
+            const number = document.getElementById('numberInput').value;
+            const response = await fetch('http://127.0.0.1:5000/api/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number: parseInt(number) })
+            });
+            const data = await response.json();
+            document.getElementById('result').innerText = 'Result: ' + data.result;
+        }
+    </script>
+</body>
+</html>
