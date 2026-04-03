@@ -9,10 +9,6 @@ df = pd.read_excel("NHL_Season_Stats.xlsx", engine='openpyxl')
 
 FEATURES = ['GP','W','L','OT','P','P%','S/O Win','SO','PP%','PK%','Shots/GP']
 
-# Features I want to add
-df['Points_per_game'] = df['P'] / df['GP']
-FEATURES.append('Points_per_game')
-
 # Scale numeric features
 scaler = MinMaxScaler()
 df_scaled = df.copy()
@@ -34,8 +30,8 @@ for team in teams:
 # Convert to arrays
 X = np.array(X)
 y = np.array(y)
-print("X shape:", X.shape)
-print("y shape:", y.shape)
+print("X shape:", X.shape) # Debug
+print("y shape:", y.shape) # Debug
 
 # Build LSTM model
 model = Sequential()
@@ -49,7 +45,7 @@ model.fit(X, y, epochs=100, verbose=0)
 #-----------------------------------------------------------------------------------
 # Testing Zone
 
-team_name = "Pittsburgh Penguins"
+team_name = "Ottawa Senators"
 
 team_data = df_scaled[df_scaled['Team'] == team_name].sort_values('Season')[FEATURES].values
 
@@ -69,13 +65,14 @@ for i, feat in enumerate(FEATURES):
 #-----------------------------------------------------------------------------------
 # Logistic Regression
 
-df['Playoff'] = (df['P'] >= 95).astype(int)
+df['Playoff'] = (df['P'] >= 80).astype(int)
 
 from sklearn.linear_model import LogisticRegression
 
 clf = LogisticRegression(max_iter=1000)
 clf.fit(df[FEATURES], df['Playoff'])
 
-prob = clf.predict_proba(pred.reshape(1, -1))[0][1]
+pred_df = pd.DataFrame([pred], columns=FEATURES)
+prob = clf.predict_proba(pred_df)[0][1]
 
 print(f"\nPlayoff probability for {team_name}: {prob*100:.1f}%")
