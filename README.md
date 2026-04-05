@@ -13,3 +13,5 @@
 7. Fixed probabilty to be more accurate, ratehr than actuign binary
 
 8. Added a start for html webstie and backend
+
+9. Still adding small update sint he fornt end and backend
