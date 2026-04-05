@@ -21,3 +21,5 @@
 11. Forgot the main at the bottom o fth backend. No wonder it wasnt running!
 
 12. Turns out when saving the LSTM model. We needed to add ".keras" at the end to make it a file for the  backend to access it
+
+13. Gotta make sure you write the proper name in the HTMK section, or else it wont know what your talking out.
