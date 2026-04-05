@@ -90,7 +90,7 @@ print(f"\nPlayoff probability for {team_name}: {prob*100:.1f}%")
 #-----------------------------------------------------------------------------
 # Save LSTM
 from tensorflow.keras.models import load_model
-model.save("NHL_LSTM")
+model.save("NHL_LSTM.keras") # Gotta put .keras a the end
 
 # Save Regression
 import joblib
