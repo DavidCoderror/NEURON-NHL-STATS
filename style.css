@@ -70,3 +70,46 @@ button:hover {
     font-weight: bold;
     color: #d32f2f; /* Red for playoff probability */
 }
+
+/*  Stats*/
+.stats-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    background-color: #ecf0f1;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 300px;
+}
+
+.stats-column div {
+    background-color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 0.95em;
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+/* List of temas */
+ol {
+    max-width: 400px;
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    list-style-position: inside;
+}
+
+ol li {
+    padding: 6px 0;
+    border-bottom: 1px solid #ececec;
+    font-size: 16px;
+}
+
+ol li:last-child {
+    border-bottom: none;
+}
