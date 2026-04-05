@@ -17,3 +17,5 @@
 9. Still adding small update sint he fornt end and backend
 
 10. Models are loaded in the backend!
+
+11. Forgot the main at the bottom o fth backend. No wonder it wasnt running!
