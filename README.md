@@ -15,3 +15,5 @@
 8. Added a start for html webstie and backend
 
 9. Still adding small update sint he fornt end and backend
+
+10. Models are loaded in the backend!
