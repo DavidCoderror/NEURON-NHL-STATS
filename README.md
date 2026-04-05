@@ -27,3 +27,5 @@
 14. Added css
 
 15. Added validation, the mdoel onl;y accepets proper team names in a specif cway
+
+16. 16. Added list of team hname in front ont end
