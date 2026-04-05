@@ -2,25 +2,50 @@
 <html>
 <head>
     <title>Frontend Test</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Predict NHL Team</h1>
+
+    <h2>Enter a NHL team name</h2>
+
+    <h3>
+        Cette page principale permet à l’utilisateur de prévoir les performances d’une équipe de hockey de la LNH. 
+        L’objectif est de fournir des informations claires et visuelles sur les statistiques de l’équipe ainsi que sur ses chances de participer aux séries éliminatoires.
+    </h3>
+
+
     <input id="teamInput" type="text" placeholder="Enter NHL team name">
     <button onclick="sendData()">Send</button>
-    <p id="result"></p>
+        <p id="result"></p>
 
-    <script>
+        <script>
         async function sendData() {
-                const team = document.getElementById('teamInput').value;
-                const response = await fetch('http://127.0.0.1:5000/api/predict', {
+            const team = document.getElementById('teamInput').value;
+            const response = await fetch('http://127.0.0.1:5000/api/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ team: team })
             });
             const data = await response.json();
-            document.getElementById('result').innerText = 'Result: ' + data.result;
+
+            const c = document.getElementById('result');
+            c.innerHTML = '';
+
+            c.innerHTML += `<h2>${data.team}</h2>`;
+            c.innerHTML += `<p>Chances of making the playoffs: ${(data.playoff_probability*100).toFixed(1)}%</p>`;
+            c.innerHTML += `<p>Wins: ${Math.round(data.stats.W)}</p>`;
+            c.innerHTML += `<p>Losses: ${Math.round(data.stats.L)}</p>`;
+            c.innerHTML += `<p>GP: ${Math.round(data.stats.GP)}</p>`;
+            c.innerHTML += `<p>OT: ${Math.round(data.stats.OT)}</p>`;
+            c.innerHTML += `<p>P: ${Math.round(data.stats.P)}</p>`;
+            c.innerHTML += `<p>P%: ${(data.stats["P%"]*100).toFixed(1)}%</p>`;
+            c.innerHTML += `<p>S/O Wins: ${Math.round(data.stats["S/O Win"])}</p>`;
+            c.innerHTML += `<p>SO: ${Math.round(data.stats.SO)}</p>`;
+            c.innerHTML += `<p>PP%: ${data.stats["PP%"].toFixed(1)}%</p>`;
+            c.innerHTML += `<p>PK%: ${data.stats["PK%"].toFixed(1)}%</p>`;
+            c.innerHTML += `<p>Shots/GP: ${Math.round(data.stats["Shots/GP"])}</p>`;
         }
-    </script>
-    
+        </script>
 </body>
 </html>
