@@ -25,3 +25,5 @@
 13. Gotta make sure you write the proper name in the HTMK section, or else it wont know what your talking out.
 
 14. Added css
+
+15. Added validation, the mdoel onl;y accepets proper team names in a specif cway
