@@ -48,3 +48,9 @@ def predict():
     # Playoff probabilty
     pred_scaled_lr = scaler_lr.transform(pred.reshape(1, -1))
     prob = modelProb.predict_proba(pred_scaled_lr)[0][1]
+
+
+
+
+if __name__ == '__main__': # IMPROTANT! FORGOT ABOUT THIS!
+    app.run(debug=True)
