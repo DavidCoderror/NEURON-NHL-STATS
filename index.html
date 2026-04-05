@@ -1,51 +1,104 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Frontend Test</title>
+    <title>Test Frontend</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Predict NHL Team</h1>
-
-    <h2>Enter a NHL team name</h2>
+    <h1>Prédire une équipe de la LNH</h1>
 
     <h3>
         Cette page principale permet à l’utilisateur de prévoir les performances d’une équipe de hockey de la LNH. 
         L’objectif est de fournir des informations claires et visuelles sur les statistiques de l’équipe ainsi que sur ses chances de participer aux séries éliminatoires.
     </h3>
 
+    <h3>Liste des équipes de la LNH:</h3>
+    <ol>
+        <li>Anaheim Ducks</li>
+        <li>Atlanta Thrashers</li>
+        <li>Boston Bruins</li>
+        <li>Buffalo Sabres</li>
+        <li>Calgary Flames</li>
+        <li>Carolina Hurricanes</li>
+        <li>Chicago Blackhawks</li>
+        <li>Columbus Blue Jackets</li>
+        <li>Colorado Avalanche</li>
+        <li>Detroit Red Wings</li>
+        <li>Edmonton Oilers</li>
+        <li>Florida Panthers</li>
+        <li>Los Angeles Kings</li>
+        <li>Minnesota Wild</li>
+        <li>Montréal Canadiens</li>
+        <li>Nashville Predators</li>
+        <li>New Jersey Devils</li>
+        <li>New York Islanders</li>
+        <li>New York Rangers</li>
+        <li>Ottawa Senators</li>
+        <li>Philadelphia Flyers</li>
+        <li>Phoenix Coyotes</li>
+        <li>Pittsburgh Penguins</li>
+        <li>San Jose Sharks</li>
+        <li>St. Louis Blues</li>
+        <li>Tampa Bay Lightning</li>
+        <li>Toronto Maple Leafs</li>
+        <li>Vancouver Canucks</li>
+        <li>Vegas Golden Knights</li>
+        <li>Washington Capitals</li>
+    </ol>
 
-    <input id="teamInput" type="text" placeholder="Enter NHL team name">
-    <button onclick="sendData()">Send</button>
-        <p id="result"></p>
+    <input id="teamInput" type="text" placeholder="Entrez le nom de l'équipe LNH">
+    <button onclick="sendData()">Envoyer</button>
+    
+    <div id="result"></div>
 
-        <script>
-        async function sendData() {
-            const team = document.getElementById('teamInput').value;
+   <script>
+    async function sendData() {
+        const team = document.getElementById('teamInput').value.trim();
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '';
+
+        // Check if input is empty
+        if (team === '') {
+            resultDiv.innerHTML = `<p style="color:red; font-weight:bold;">Veuillez entrer le nom exact d'une équipe de la LNH.</p>`;
+            return;
+        }
+
+        try {
             const response = await fetch('http://127.0.0.1:5000/api/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ team: team })
             });
+
+            if (!response.ok) {
+                throw new Error('Équipe introuvable.');
+            }
+
             const data = await response.json();
 
-            const c = document.getElementById('result');
-            c.innerHTML = '';
+            // Display results
+            resultDiv.innerHTML += `<h2>${data.team}</h2>`;
+            resultDiv.innerHTML += `<p><strong>Chances de participer aux séries éliminatoires :</strong> ${(data.playoff_probability*100).toFixed(1)}%</p>`;
 
-            c.innerHTML += `<h2>${data.team}</h2>`;
-            c.innerHTML += `<p>Chances of making the playoffs: ${(data.playoff_probability*100).toFixed(1)}%</p>`;
-            c.innerHTML += `<p>Wins: ${Math.round(data.stats.W)}</p>`;
-            c.innerHTML += `<p>Losses: ${Math.round(data.stats.L)}</p>`;
-            c.innerHTML += `<p>GP: ${Math.round(data.stats.GP)}</p>`;
-            c.innerHTML += `<p>OT: ${Math.round(data.stats.OT)}</p>`;
-            c.innerHTML += `<p>P: ${Math.round(data.stats.P)}</p>`;
-            c.innerHTML += `<p>P%: ${(data.stats["P%"]*100).toFixed(1)}%</p>`;
-            c.innerHTML += `<p>S/O Wins: ${Math.round(data.stats["S/O Win"])}</p>`;
-            c.innerHTML += `<p>SO: ${Math.round(data.stats.SO)}</p>`;
-            c.innerHTML += `<p>PP%: ${data.stats["PP%"].toFixed(1)}%</p>`;
-            c.innerHTML += `<p>PK%: ${data.stats["PK%"].toFixed(1)}%</p>`;
-            c.innerHTML += `<p>Shots/GP: ${Math.round(data.stats["Shots/GP"])}</p>`;
+            resultDiv.innerHTML += `
+                <div class="stats-column">
+                    <div><strong>Victoires :</strong> ${Math.round(data.stats.W)}</div>
+                    <div><strong>Défaites :</strong> ${Math.round(data.stats.L)}</div>
+                    <div><strong>GP :</strong> ${Math.round(data.stats.GP)}</div>
+                    <div><strong>OT :</strong> ${Math.round(data.stats.OT)}</div>
+                    <div><strong>Points :</strong> ${Math.round(data.stats.P)}</div>
+                    <div><strong>% Points :</strong> ${(data.stats["P%"]*100).toFixed(1)}%</div>
+                    <div><strong>Victoire S/O :</strong> ${Math.round(data.stats["S/O Win"])}</div>
+                    <div><strong>SO :</strong> ${Math.round(data.stats.SO)}</div>
+                    <div><strong>PP% :</strong> ${data.stats["PP%"].toFixed(1)}%</div>
+                    <div><strong>PK% :</strong> ${data.stats["PK%"].toFixed(1)}%</div>
+                    <div><strong>Tirs/GP :</strong> ${Math.round(data.stats["Shots/GP"])}</div>
+                </div>
+            `;
+        } catch (error) {
+            resultDiv.innerHTML = `<p style="color:red; font-weight:bold;">Erreur : équipe non reconnue. Veuillez entrer le nom exact de notre liste.</p>`;
         }
-        </script>
+    }
+</script>
 </body>
 </html>
