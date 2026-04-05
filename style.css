@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Page title */
+h1 {
+    color: #1a237e; /* Dark blue */
+    margin-bottom: 20px;
+}
+
+/* Input box */
+input{
+    padding: 10px;
+    width: 250px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+/* Button styling */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #1a237e;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 250px;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #3949ab;
+}
+
+/* Result container */
+#result {
+    margin-top: 30px;
+    text-align: left;
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    min-width: 300px;
+}
+
+/* Team name */
+#result h2 {
+    color: #1b5e20; /* Dark green for team name */
+    margin-bottom: 10px;
+}
+
+/* Each stat paragraph */
+#result p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Playoff probability highlighted */
+#result p:first-of-type {
+    font-weight: bold;
+    color: #d32f2f; /* Red for playoff probability */
+}
