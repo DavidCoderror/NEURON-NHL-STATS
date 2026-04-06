@@ -29,3 +29,5 @@
 15. Added validation, the mdoel onl;y accepets proper team names in a specif cway
 
 16. 16. Added list of team hname in front ont end
+
+17. Working on adding the enmter manual data section
