@@ -70,35 +70,53 @@
                 body: JSON.stringify({ team: team })
             });
 
-            if (!response.ok) {
-                throw new Error('Équipe introuvable.');
-            }
+            if (!response.ok) {throw new Error('Équipe introuvable.'); } //debug
 
             const data = await response.json();
 
             // Display results
             resultDiv.innerHTML += `<h2>${data.team}</h2>`;
+            resultDiv.innerHTML += `<h3> Precition pour la saison 2025-2026 de LNH</h3>`;
             resultDiv.innerHTML += `<p><strong>Chances de participer aux séries éliminatoires :</strong> ${(data.playoff_probability*100).toFixed(1)}%</p>`;
 
             resultDiv.innerHTML += `
                 <div class="stats-column">
-                    <div><strong>Victoires :</strong> ${Math.round(data.stats.W)}</div>
-                    <div><strong>Défaites :</strong> ${Math.round(data.stats.L)}</div>
-                    <div><strong>GP :</strong> ${Math.round(data.stats.GP)}</div>
-                    <div><strong>OT :</strong> ${Math.round(data.stats.OT)}</div>
-                    <div><strong>Points :</strong> ${Math.round(data.stats.P)}</div>
-                    <div><strong>% Points :</strong> ${(data.stats["P%"]*100).toFixed(1)}%</div>
-                    <div><strong>Victoire S/O :</strong> ${Math.round(data.stats["S/O Win"])}</div>
-                    <div><strong>SO :</strong> ${Math.round(data.stats.SO)}</div>
-                    <div><strong>PP% :</strong> ${data.stats["PP%"].toFixed(1)}%</div>
-                    <div><strong>PK% :</strong> ${data.stats["PK%"].toFixed(1)}%</div>
-                    <div><strong>Tirs/GP :</strong> ${Math.round(data.stats["Shots/GP"])}</div>
+                    <div class="stat-row"><span>Victoires :</span> <span class="desc">Nombre total de matchs gagnés par l'équipe cette saison, incluant les prolongations et tirs de fusillade</span> - ${Math.round(data.stats.W)}</div>
+                    <div class="stat-row"><span>Défaites :</span> <span class="desc">Nombre total de matchs perdus, incluant les défaites en temps réglementaire et en prolongation</span> - ${Math.round(data.stats.L)}</div>
+                    <div class="stat-row"><span>GP :</span> <span class="desc">Total de matchs joués par l'équipe durant la saison régulière</span> - ${Math.round(data.stats.GP)}</div>
+                    <div class="stat-row"><span>OT :</span> <span class="desc">Nombre de défaites subies en prolongation, ce qui donne généralement 1 point à l'équipe</span> - ${Math.round(data.stats.OT)}</div>
+                    <div class="stat-row"><span>Points :</span> <span class="desc">Somme des points accumulés par l'équipe selon le système de points de la LNH</span> - ${Math.round(data.stats.P)}</div>
+                    <div class="stat-row"><span>% Points :</span> <span class="desc">Pourcentage de points obtenus par rapport au total possible de points dans la saison</span> - ${(data.stats["P%"]*100).toFixed(1)}%</div>
+                    <div class="stat-row"><span>Victoire S/O :</span> <span class="desc">Nombre de victoires obtenues lors des tirs de fusillade après une égalité en prolongation</span> - ${Math.round(data.stats["S/O Win"])}</div>
+                    <div class="stat-row"><span>SO :</span> <span class="desc">Nombre de matchs où l'équipe n'a accordé aucun but à l'adversaire</span> - ${Math.round(data.stats.SO)}</div>
+                    <div class="stat-row"><span>PP% :</span> <span class="desc">Pourcentage de réussite de l'équipe lors des avantages numériques (power play)</span> - ${data.stats["PP%"].toFixed(1)}%</div>
+                    <div class="stat-row"><span>PK% :</span> <span class="desc">Pourcentage de réussite de l'équipe lorsqu'elle est en désavantage numérique (penalty kill)</span> - ${data.stats["PK%"].toFixed(1)}%</div>
+                    <div class="stat-row"><span>Tirs/GP :</span> <span class="desc">Moyenne du nombre de tirs effectués par l'équipe par match</span> - ${Math.round(data.stats["Shots/GP"])}</div>
                 </div>
             `;
         } catch (error) {
             resultDiv.innerHTML = `<p style="color:red; font-weight:bold;">Erreur : équipe non reconnue. Veuillez entrer le nom exact de notre liste.</p>`;
         }
     }
-</script>
+    </script>
+
+    <!---Section Manuel-->
+
+    <h2> Section Donnes Personnelles</h2>
+
+    <input id="GP" placeholder="Matchs joués (GP)">
+    <input id="W" placeholder="Victoires (W)">
+    <input id="L" placeholder="Défaites (L)">
+    <input id="OT" placeholder="OT">
+    <input id="P" placeholder="Points">
+    <input id="Ppct" placeholder="% Points (ex: 0.55)">
+    <input id="SOWin" placeholder="Victoire S/O">
+    <input id="SO" placeholder="Shutouts">
+    <input id="PP" placeholder="PP%">
+    <input id="PK" placeholder="PK%">
+    <input id="Shots" placeholder="Tirs/GP">
+
+    <button onclick="sendManual()">Prédire (manuel)</button>
+
 </body>
 </html>
